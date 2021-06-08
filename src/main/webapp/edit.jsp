@@ -60,12 +60,16 @@
                            value="<c:out value='${product.color}' />"
                     />
                 </td>
-            </tr>
-            <select name = "category_id">
-                <c:forEach items="${categories}" var="c">
-                    <option value="${c.id}">${c.name}</option>
-                </c:forEach>
-            </select>
+            <tr>
+                <th>Category:</th>
+                <td>
+                    <select name="category_id">
+                        <c:forEach items="${categories}" var="c">
+                            <option value="${c.id}">${c.name}</option>
+                        </c:forEach>
+                    </select>
+                </td>
+            <tr>
             <tr>
                 <td colspan="2" align="center">
                     <input type="submit" value="Save"/>

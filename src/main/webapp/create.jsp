@@ -52,8 +52,8 @@
                 <th>Category Name:</th>
                 <td>
                     <select name="category_id">
-                        <c:forEach items="${category}" var="category">
-                            <option value="${category.id}" >${category.name}</option>
+                        <c:forEach items="${category}" var="cate">
+                            <option value="${cate.id}" >${cate.name}</option>
                         </c:forEach>
                     </select>
                 </td>

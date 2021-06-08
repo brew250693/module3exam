@@ -52,6 +52,7 @@ public class ProductServlet extends HttpServlet {
             throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("create.jsp");
         List<Category> categoryList = productDao.selectAllCategory();
+        System.out.println(categoryList);
         request.setAttribute("category", categoryList);
         dispatcher.forward(request, response);
     }
@@ -114,6 +115,7 @@ public class ProductServlet extends HttpServlet {
         int amount = Integer.parseInt(request.getParameter("amount"));
         String color = request.getParameter("color");
         int categoryId = Integer.parseInt(request.getParameter("category_id"));
+
         Category category = productDao.getCategoryById(categoryId);
         Product newProduct = new Product(name, price, amount, color, category);
         productDao.insertProduct(newProduct);
@@ -128,7 +130,10 @@ public class ProductServlet extends HttpServlet {
         int price = Integer.parseInt(request.getParameter("price"));
         int amount = Integer.parseInt(request.getParameter("amount"));
         String color = request.getParameter("color");
-        Product pd = new Product(id, name, price, amount, color);
+        int category_id = Integer.parseInt(request.getParameter("category_id"));
+        Category category = productDao.getCategoryById(category_id);
+
+        Product pd = new Product(id, name, price, amount, color,category);
         productDao.updateProduct(pd);
         RequestDispatcher dispatcher = request.getRequestDispatcher("edit.jsp");
         dispatcher.forward(request, response);

@@ -125,11 +125,11 @@ public class ProductDao implements IProductDao {
         PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_PRODUCT_SQL);{
             preparedStatement.setString(1,product.getName());
             preparedStatement.setInt(2,product.getPrice());
-            preparedStatement.setInt(4,product.getId());
-            preparedStatement.setInt(5,product.getAmount());
-            preparedStatement.setString(1,product.getColor());
+            preparedStatement.setInt(3,product.getAmount());
+            preparedStatement.setString(4,product.getColor());
+            preparedStatement.setInt(5,product.getCategory().getId());
 
-            preparedStatement.setInt(3,product.getCategory().getId());
+            preparedStatement.setInt(6,product.getId());
             rowUpdate = preparedStatement.executeUpdate()>0;
         }
         return rowUpdate;
@@ -147,7 +147,8 @@ public class ProductDao implements IProductDao {
                 ResultSet rs = preparedStatement.executeQuery();
                 while (rs.next()) {
                     String name = rs.getString("name");
-                    category = new Category(categoryId, name);
+                    String des = rs.getString("description");
+                    category = new Category(categoryId, name,des);
                 }
             }
         } catch (SQLException throwables) {
@@ -165,7 +166,9 @@ public class ProductDao implements IProductDao {
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
-                Category category = new Category(id, name);
+                String description = resultSet.getString("description");
+                Category category = new Category(id, name,description);
+                System.out.println(category);
                 categoryList.add(category);
             }
 

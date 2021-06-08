@@ -46,6 +46,7 @@ public class CategoryService implements ICategoryService {
                 String name = rs.getString("name");
                 String description = rs.getString("description");
                 Category category = new Category(id,name,description);
+                System.out.println(category);
                 categoryList.add(category);
             }
         } catch (SQLException throwables) {
