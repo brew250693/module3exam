@@ -14,5 +14,6 @@ public interface IProductDao {
     public boolean updateProduct(Product product) throws SQLException;
     Category getCategoryById(int categoryId);
     List<Category> selectAllCategory();
+    List<Product> searchByName(String name);
 
 }

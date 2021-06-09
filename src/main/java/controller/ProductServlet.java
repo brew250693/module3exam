@@ -1,8 +1,8 @@
 package controller;
 
 import dao.ProductDao;
-import dao.category.CategoryService;
-import dao.category.ICategoryService;
+import service.CategoryService;
+import service.ICategoryService;
 import model.Category;
 import model.Product;
 
@@ -15,39 +15,54 @@ import java.util.List;
 
 @WebServlet(name = "ProductServlet", value = "/product")
 public class ProductServlet extends HttpServlet {
-        private static final long serialVersionUID = 1L;
-        private ProductDao productDao;
-        public void init() {
-            productDao = new ProductDao();
-        }
-        private ICategoryService categoryService = new CategoryService();
+    private static final long serialVersionUID = 1L;
+    private ProductDao productDao;
 
-        @Override
+    public void init() {
+        productDao = new ProductDao();
+    }
+
+    private ICategoryService categoryService = new CategoryService();
+
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-            String action = request.getParameter("action");
-            if (action == null) {
-                action = "";
-            }
-
-            try {
-                switch (action) {
-                    case "create":
-                        showNewForm(request, response);
-                        break;
-                    case "edit":
-                        showEditForm(request, response);
-                        break;
-                    case "delete":
-                        deleteProduct(request, response);
-                        break;
-                    default:
-                        listProduct(request, response);
-                        break;
-                }
-            } catch (SQLException ex) {
-                throw new ServletException(ex);
-            }
+        String action = request.getParameter("action");
+        if (action == null) {
+            action = "";
         }
+
+        try {
+            switch (action) {
+                case "create":
+                    showNewForm(request, response);
+                    break;
+                case "edit":
+                    showEditForm(request, response);
+                    break;
+                case "delete":
+                    deleteProduct(request, response);
+                    break;
+                case "search":
+                    showSearchByName(request, response);
+                    break;
+                default:
+                    listProduct(request, response);
+                    break;
+            }
+        } catch (SQLException ex) {
+            throw new ServletException(ex);
+        }
+    }
+
+    private void showSearchByName(HttpServletRequest request, HttpServletResponse response) {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("search.jsp");
+        try {
+            dispatcher.forward(request, response);
+        } catch (ServletException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void showNewForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         RequestDispatcher dispatcher = request.getRequestDispatcher("create.jsp");
@@ -102,6 +117,9 @@ public class ProductServlet extends HttpServlet {
                 case "edit":
                     updateProduct(request, response);
                     break;
+                case "search":
+                    searchByName(request, response);
+                    break;
             }
         } catch (SQLException ex) {
             throw new ServletException(ex);
@@ -133,9 +151,24 @@ public class ProductServlet extends HttpServlet {
         int category_id = Integer.parseInt(request.getParameter("category_id"));
         Category category = productDao.getCategoryById(category_id);
 
-        Product pd = new Product(id, name, price, amount, color,category);
+        Product pd = new Product(id, name, price, amount, color, category);
         productDao.updateProduct(pd);
         RequestDispatcher dispatcher = request.getRequestDispatcher("edit.jsp");
         dispatcher.forward(request, response);
+    }
+
+    private void searchByName(HttpServletRequest request, HttpServletResponse response) {
+        String name = request.getParameter("search");
+
+        List<Product> products = productDao.searchByName(name);
+
+        request.setAttribute("searchByName", products);
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/searchResult.jsp");
+        try {
+            dispatcher.forward(request, response);
+        } catch (ServletException | IOException e) {
+            e.printStackTrace();
+        }
     }
 }

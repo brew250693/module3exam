@@ -1,14 +1,14 @@
-dao/category/CategoryService.java
- dao.category.CategoryService
+controller/ProductServlet.java
+ controller.ProductServlet
 dao/IProductDao.java
  dao.IProductDao
 dao/category/ICategoryService.java
  dao.category.ICategoryService
-model/Category.java
- model.Category
+dao/category/CategoryService.java
+ dao.category.CategoryService
 model/Product.java
  model.Product
-controller/ProductServlet.java
- controller.ProductServlet
+model/Category.java
+ model.Category
 dao/ProductDao.java
  dao.ProductDao

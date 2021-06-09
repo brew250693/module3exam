@@ -17,6 +17,11 @@
     <h1>Product Management</h1>
     <h2>
         <a href="/product?action=create">Add New Product</a>
+        <a href="/product?action=search">Search </a>
+    </h2>
+
+    <h2>
+        <a href="/product?action=search">Search </a>
     </h2>
 </center>
 <div align="center">
